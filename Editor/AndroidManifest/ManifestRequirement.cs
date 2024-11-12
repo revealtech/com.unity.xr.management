@@ -56,9 +56,10 @@ namespace Unity.XR.Management.AndroidManifest.Editor
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-#if UNITY_2021_3_OR_NEWER
-            return System.HashCode.Combine(NewElements, OverrideElements, RemoveElements);
-#else
+            // REVEAL: HashCode conflicts in Hive with Microsoft.Bcl.HashCode
+//#if UNITY_2021_3_OR_NEWER
+            //return HashCode.Combine(NewElements, OverrideElements, RemoveElements);
+//#else
             // Unfortunately, 2020.3 compiles against .NET 2.0, which doesn't include the more reasonable HashCode class.
             // Still, a hash function is needed for comparing these objects, so going on with the option outlined here:
             // https://stackoverflow.com/questions/1646807/quick-and-simple-hash-code-combinations
@@ -68,7 +69,7 @@ namespace Unity.XR.Management.AndroidManifest.Editor
             hash = hash * factor + (OverrideElements != null ? OverrideElements.GetHashCode() : 0);
             hash = hash * factor + (RemoveElements != null ? RemoveElements.GetHashCode() : 0);
             return hash;
-#endif // UNITY_2021_3_OR_NEWER
+//#endif // UNITY_2021_3_OR_NEWER
         }
     }
 }
